@@ -1,0 +1,9 @@
+(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const c of t.addedNodes)c.tagName==="LINK"&&c.rel==="modulepreload"&&r(c)}).observe(document,{childList:!0,subtree:!0});function o(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function r(e){if(e.ep)return;e.ep=!0;const t=o(e);fetch(e.href,t)}})();let a=[],d=0,f=[];function m(){const n=new XMLHttpRequest;n.open("GET","perguntas.xml",!0),n.onreadystatechange=function(){if(n.readyState===4&&n.status===200){const r=new DOMParser().parseFromString(n.responseText,"application/xml").getElementsByTagName("question");for(let e=0;e<r.length;e++){const t=r[e],c=t.getElementsByTagName("text")[0].textContent,l=[],u=t.getElementsByTagName("answer");for(let i=0;i<u.length;i++)l.push({text:u[i].textContent,correct:u[i].getAttribute("value")==="1"});a.push({question:c,answers:l})}p(d)}},n.send()}function p(n){const s=a[n],o=document.getElementById("question-container"),r=`
+        <h2>${s.question}</h2>
+        ${s.answers.map((e,t)=>`
+            <div>
+                <input type="radio" name="question${n}" id="answer${n}_${t}" value="${e.correct}" ${g(n,t)} onclick="saveAnswer(${n}, ${t})"/>
+                <label for="answer${n}_${t}">${e.text}</label>
+            </div>
+        `).join("")}
+    `;o.innerHTML=r,document.getElementById("prev").disabled=n===0,document.getElementById("next").disabled=n===a.length-1}function g(n,s){const o=f.find(r=>r.questionIndex===n);return o&&o.selected===s?"checked":""}m();
