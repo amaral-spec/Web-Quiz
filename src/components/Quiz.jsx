@@ -9,7 +9,7 @@ function Quiz() {
   useEffect(() => {
     const loadXMLData = async () => {
       try {
-        const response = await fetch("/xml/perguntas.xml");
+        const response = await fetch("/public/xml/perguntas.xml");
         const text = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "application/xml");
@@ -124,25 +124,6 @@ function Quiz() {
           <label htmlFor={`answer${currentQuestionIndex}_${i}`}>{answer.text}</label>
         </div>
       ))}
-      <div>
-        {}
-        <button onClick={() => handleNavigate(-1)} disabled={currentQuestionIndex === 0}>
-          Anterior
-        </button>
-  
-        {}
-        <button
-          onClick={() => handleNavigate(1)}
-          disabled={currentQuestionIndex === quizData.length - 1}
-        >
-          Próxima
-        </button>
-  
-        {}
-        {currentQuestionIndex === quizData.length - 1 && (
-          <button onClick={handleSubmit}>Submeter Respostas</button>
-        )}
-      </div>
     </div>
   );
 }
